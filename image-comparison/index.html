@@ -283,15 +283,15 @@
         color: #ffc107;
       }
       .byop-section {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        border: 2px solid #28a745;
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border: 2px solid #dc3545;
         border-radius: 8px;
         padding: 12px 15px;
         margin-bottom: 15px;
       }
       .byop-section.connected {
-        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-        border-color: #ffc107;
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-color: #28a745;
       }
       .byop-status {
         display: flex;
@@ -383,7 +383,7 @@
       <div class="byop-section" id="byopSection">
         <div class="byop-status">
           <div class="byop-info" id="byopInfo">
-            <strong>Free Tier Mode</strong> - Using Pollinations free tier (rate limits apply)
+            <strong>API Key Required</strong> - Connect your Pollinations account to test models
           </div>
           <div>
             <button class="btn btn-connect" id="connectBtn" onclick="connectWithPollinations()">
@@ -637,6 +637,7 @@
         const info = document.getElementById('byopInfo');
         const connectBtn = document.getElementById('connectBtn');
         const disconnectBtn = document.getElementById('disconnectBtn');
+        const testBtn = document.getElementById('testAllBtn');
 
         if (userApiKey && userProfile) {
           section.classList.add('connected');
@@ -647,17 +648,24 @@
             <small>Tier: ${userProfile.tier || 'unknown'} | 
             <a href="${AUTH_BASE_URL}" target="_blank">View Dashboard</a></small>
           `;
+          testBtn.disabled = false;
+          testBtn.textContent = 'Test All Models';
         } else if (userApiKey) {
           section.classList.add('connected');
           connectBtn.style.display = 'none';
           disconnectBtn.style.display = 'inline-block';
           info.innerHTML = `<strong>Connected</strong> - Using your Pollinations account`;
+          testBtn.disabled = false;
+          testBtn.textContent = 'Test All Models';
         } else {
           section.classList.remove('connected');
           connectBtn.style.display = 'inline-block';
           disconnectBtn.style.display = 'none';
-          info.innerHTML = `<strong>Free Tier Mode</strong> - Using Pollinations free tier (rate limits apply)`;
+          info.innerHTML = `<strong>API Key Required</strong> - Connect your Pollinations account to test models`;
+          testBtn.disabled = true;
+          testBtn.textContent = 'Connect to Test Models';
         }
+      }
       }
 
       // Prompt Functions
@@ -1009,7 +1017,19 @@
           }
           
           const models = await response.json();
-          availableModels = models.map(m => m.name || m.id).filter(Boolean);
+          
+          // Filter out video models and only keep image models
+          availableModels = models
+            .filter(m => {
+              // Check if model outputs video
+              const outputModalities = m.output_modalities || [];
+              const isVideo = outputModalities.includes("video");
+              const isImage = outputModalities.includes("image");
+              // Keep only image models (not video-only models)
+              return isImage && !isVideo || (!isVideo && !outputModalities.length);
+            })
+            .map(m => m.name || m.id)
+            .filter(Boolean);
           
           models.forEach(model => {
             if (model.name) {
@@ -1017,7 +1037,7 @@
             }
           });
           
-          log(`Loaded ${availableModels.length} models from API`, "success");
+          log(`Loaded ${availableModels.length} image models from API`, "success");
           
           document.getElementById("modelsInfo").style.display = "block";
           selectedModels = new Set(availableModels);
