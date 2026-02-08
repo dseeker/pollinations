@@ -373,25 +373,27 @@
   </head>
   <body>
     <div class="container">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <img src="https://raw.githubusercontent.com/pollinations/pollinations/main/assets/logo-text.svg" alt="pollinations.ai" style="max-width: 200px; height: auto; margin-bottom: 5px;">
-        <h1 style="margin-top: 5px; font-size: 24px; margin-bottom: 5px;">🌸 Pollinations.ai Image Model Comparison</h1>
-        <p class="subtitle" style="margin-bottom: 0; font-size: 14px;">Compare AI image generation models side-by-side</p>
-      </div>
-
-      <!-- BYOP Section -->
-      <div class="byop-section" id="byopSection">
-        <div class="byop-status">
-          <div class="byop-info" id="byopInfo">
-            <strong>API Key Required</strong> - Connect your Pollinations account to test models
-          </div>
-          <div>
-            <button class="btn btn-connect" id="connectBtn" onclick="connectWithPollinations()">
-              Connect with Pollinations
-            </button>
-            <button class="btn btn-disconnect" id="disconnectBtn" onclick="disconnectPollinations()" style="display: none;">
-              Disconnect
-            </button>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 20px; flex-wrap: wrap;">
+        <div style="flex: 1;">
+          <img src="https://raw.githubusercontent.com/pollinations/pollinations/main/assets/logo-text.svg" alt="pollinations.ai" style="max-width: 250px; height: auto; margin-bottom: 10px;">
+          <h1 style="margin-top: 10px; margin-bottom: 10px;">🌸 Pollinations.ai Image Model Comparison</h1>
+          <p class="subtitle" style="margin-bottom: 0;">Compare AI image generation models side-by-side</p>
+        </div>
+        
+        <!-- BYOP Section -->
+        <div class="byop-section" id="byopSection" style="flex: 0 0 auto; min-width: 300px; max-width: 400px;">
+          <div class="byop-status">
+            <div class="byop-info" id="byopInfo">
+              <strong>API Key Required</strong> - Connect your Pollinations account to test models
+            </div>
+            <div>
+              <button class="btn btn-connect" id="connectBtn" onclick="connectWithPollinations()">
+                Connect
+              </button>
+              <button class="btn btn-disconnect" id="disconnectBtn" onclick="disconnectPollinations()" style="display: none;">
+                Disconnect
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -404,6 +406,7 @@
               <label for="sceneInput" style="font-size: 11px; margin-bottom: 2px; display: block;">Scene:</label>
               <input type="text" id="sceneInput" list="sceneOptions" oninput="updatePrompt()" placeholder="Type or select a scene..." value="Mountain landscape at golden hour with dramatic clouds" class="autocomplete-input" style="margin-bottom: 0;">
               <datalist id="sceneOptions">
+                <!-- Landscapes & Nature -->
                 <option value="Mountain landscape at golden hour with dramatic clouds">
                 <option value="Futuristic cyberpunk cityscape with neon lights">
                 <option value="Japanese zen garden with koi pond and cherry blossoms">
@@ -414,6 +417,75 @@
                 <option value="Tropical beach at sunset with palm trees">
                 <option value="Ancient library with towering bookshelves and ladder">
                 <option value="Mystical forest with bioluminescent plants and fireflies">
+                <option value="Dramatic lightning storm over dark ocean waves">
+                <option value="Autumn forest with red and gold falling leaves">
+                <option value="Desert oasis with palm trees and turquoise water">
+                <option value="Northern lights over snowy mountains">
+                <option value="Volcanic eruption with flowing lava at night">
+                <!-- People & Portraits -->
+                <option value="Elderly woman with wise eyes and silver hair, portrait">
+                <option value="Young child playing in a sunflower field">
+                <option value="Fashion model on Paris runway, haute couture">
+                <option value="Street musician playing saxophone in the rain">
+                <option value="Viking warrior with intricate tattoos and battle scars">
+                <option value="Geisha in traditional kimono holding a paper umbrella">
+                <option value="Astronaut in full spacesuit on Mars surface">
+                <option value="Ballerina in mid-pose on stage with spotlight">
+                <option value="Cyberpunk hacker with glowing neon implants">
+                <option value="Indigenous shaman performing sacred ritual">
+                <option value="Victorian gentleman with top hat and monocle">
+                <option value="Surfer catching massive wave at Pipeline">
+                <option value="Samurai warrior in full armor with katana">
+                <option value="Flamenco dancer in red dress mid-performance">
+                <option value="Master chef plating gourmet dish in kitchen">
+                <!-- Animals & Creatures -->
+                <option value="Majestic lion with flowing mane on African savanna">
+                <option value="Snow leopard hunting in Himalayan mountains">
+                <option value="Giant panda eating bamboo in misty forest">
+                <option value="Great white shark breaching ocean surface">
+                <option value="Bald eagle soaring over Grand Canyon">
+                <option value="Playful dolphins jumping through ocean waves">
+                <option value="Majestic elephant herd at watering hole">
+                <option value="Grizzly bear catching salmon in rushing river">
+                <option value="Colorful parrot with iridescent feathers">
+                <option value="Wolf pack howling at full moon">
+                <option value="Giant sea turtle swimming through coral reef">
+                <option value="Owl perched on branch in moonlit forest">
+                <option value="Pride of lions resting under acacia tree">
+                <option value="Hummingbird hovering near bright red flower">
+                <option value="Orca whale pod swimming in arctic waters">
+                <!-- Architecture & Urban -->
+                <option value="Art Deco skyscraper interior with golden elevators">
+                <option value="Abandoned factory with broken windows and rust">
+                <option value="Moroccan riad courtyard with intricate tilework">
+                <option value="Futuristic floating city above clouds">
+                <option value="Ancient Roman colosseum filled with spectators">
+                <option value="Tokyo street at night with neon signs and rain">
+                <option value="Santorini white buildings with blue domes">
+                <option value="Gothic cathedral with stained glass windows">
+                <option value="Dubai skyline with Burj Khalifa at sunset">
+                <option value="Venice canal with gondola and old buildings">
+                <option value="Bamboo treehouse in lush jungle canopy">
+                <option value="Crystal palace interior with light beams">
+                <option value="Underwater city with domed buildings">
+                <option value="Steampunk airship dock with brass gears">
+                <option value="Mayan pyramid temple in jungle overgrowth">
+                <!-- Movie Scenes & Fantasy -->
+                <option value="Epic battle scene with dragons and knights">
+                <option value="Haunted Victorian mansion on stormy night">
+                <option value="Post-apocalyptic wasteland with abandoned cars">
+                <option value="Enchanted fairy garden with glowing mushrooms">
+                <option value="Spaceship cockpit during hyperspace jump">
+                <option value="Western saloon showdown at high noon">
+                <option value="Mermaid sitting on rock in moonlit cove">
+                <option value="Zombie horde attacking shopping mall">
+                <option value="Pirate ship battle in raging storm">
+                <option value="Alien marketplace on distant planet">
+                <option value="Superhero landing in destroyed city street">
+                <option value="Medieval jousting tournament with cheering crowds">
+                <option value="Deep sea monster rising from ocean depths">
+                <option value="Time travel portal with swirling energy">
+                <option value="Giant robot fighting kaiju in Tokyo">
               </datalist>
             </div>
             <div style="flex: 1; min-width: 180px;">
@@ -430,6 +502,21 @@
                 <option value="3D render octane render cinematic">
                 <option value="vintage photograph sepia tone nostalgic">
                 <option value="fantasy art epic scale magical atmosphere">
+                <option value="charcoal sketch rough and expressive">
+                <option value="pop art bold colors and comic book style">
+                <option value="art nouveau elegant flowing organic lines">
+                <option value="abstract expressionism bold gestural strokes">
+                <option value="renaissance painting chiaroscuro lighting">
+                <option value="pixel art retro 8-bit game style">
+                <option value="surrealist dreamlike bizarre juxtapositions">
+                <option value="art deco geometric patterns and gold accents">
+                <option value="graffiti street art urban colorful spray paint">
+                <option value="ukiyo-e Japanese woodblock print style">
+                <option value="low poly 3D geometric minimalist">
+                <option value="baroque painting dramatic theatrical lighting">
+                <option value="futurist dynamic motion and speed lines">
+                <option value="pointillism dots of pure color">
+                <option value="constructivist bold geometric propaganda style">
               </datalist>
             </div>
           </div>
@@ -524,6 +611,7 @@
 
       // Scene and style options for randomization
       const sceneOptions = [
+        // Landscapes & Nature
         "Mountain landscape at golden hour with dramatic clouds",
         "Futuristic cyberpunk cityscape with neon lights",
         "Japanese zen garden with koi pond and cherry blossoms",
@@ -533,7 +621,76 @@
         "Medieval castle on misty hilltop at sunrise",
         "Tropical beach at sunset with palm trees",
         "Ancient library with towering bookshelves and ladder",
-        "Mystical forest with bioluminescent plants and fireflies"
+        "Mystical forest with bioluminescent plants and fireflies",
+        "Dramatic lightning storm over dark ocean waves",
+        "Autumn forest with red and gold falling leaves",
+        "Desert oasis with palm trees and turquoise water",
+        "Northern lights over snowy mountains",
+        "Volcanic eruption with flowing lava at night",
+        // People & Portraits
+        "Elderly woman with wise eyes and silver hair, portrait",
+        "Young child playing in a sunflower field",
+        "Fashion model on Paris runway, haute couture",
+        "Street musician playing saxophone in the rain",
+        "Viking warrior with intricate tattoos and battle scars",
+        "Geisha in traditional kimono holding a paper umbrella",
+        "Astronaut in full spacesuit on Mars surface",
+        "Ballerina in mid-pose on stage with spotlight",
+        "Cyberpunk hacker with glowing neon implants",
+        "Indigenous shaman performing sacred ritual",
+        "Victorian gentleman with top hat and monocle",
+        "Surfer catching massive wave at Pipeline",
+        "Samurai warrior in full armor with katana",
+        "Flamenco dancer in red dress mid-performance",
+        "Master chef plating gourmet dish in kitchen",
+        // Animals & Creatures
+        "Majestic lion with flowing mane on African savanna",
+        "Snow leopard hunting in Himalayan mountains",
+        "Giant panda eating bamboo in misty forest",
+        "Great white shark breaching ocean surface",
+        "Bald eagle soaring over Grand Canyon",
+        "Playful dolphins jumping through ocean waves",
+        "Majestic elephant herd at watering hole",
+        "Grizzly bear catching salmon in rushing river",
+        "Colorful parrot with iridescent feathers",
+        "Wolf pack howling at full moon",
+        "Giant sea turtle swimming through coral reef",
+        "Owl perched on branch in moonlit forest",
+        "Pride of lions resting under acacia tree",
+        "Hummingbird hovering near bright red flower",
+        "Orca whale pod swimming in arctic waters",
+        // Architecture & Urban
+        "Art Deco skyscraper interior with golden elevators",
+        "Abandoned factory with broken windows and rust",
+        "Moroccan riad courtyard with intricate tilework",
+        "Futuristic floating city above clouds",
+        "Ancient Roman colosseum filled with spectators",
+        "Tokyo street at night with neon signs and rain",
+        "Santorini white buildings with blue domes",
+        "Gothic cathedral with stained glass windows",
+        "Dubai skyline with Burj Khalifa at sunset",
+        "Venice canal with gondola and old buildings",
+        "Bamboo treehouse in lush jungle canopy",
+        "Crystal palace interior with light beams",
+        "Underwater city with domed buildings",
+        "Steampunk airship dock with brass gears",
+        "Mayan pyramid temple in jungle overgrowth",
+        // Movie Scenes & Fantasy
+        "Epic battle scene with dragons and knights",
+        "Haunted Victorian mansion on stormy night",
+        "Post-apocalyptic wasteland with abandoned cars",
+        "Enchanted fairy garden with glowing mushrooms",
+        "Spaceship cockpit during hyperspace jump",
+        "Western saloon showdown at high noon",
+        "Mermaid sitting on rock in moonlit cove",
+        "Zombie horde attacking shopping mall",
+        "Pirate ship battle in raging storm",
+        "Alien marketplace on distant planet",
+        "Superhero landing in destroyed city street",
+        "Medieval jousting tournament with cheering crowds",
+        "Deep sea monster rising from ocean depths",
+        "Time travel portal with swirling energy",
+        "Giant robot fighting kaiju in Tokyo"
       ];
 
       const styleOptions = [
@@ -546,7 +703,22 @@
         "minimalist clean composition with negative space",
         "3D render octane render cinematic",
         "vintage photograph sepia tone nostalgic",
-        "fantasy art epic scale magical atmosphere"
+        "fantasy art epic scale magical atmosphere",
+        "charcoal sketch rough and expressive",
+        "pop art bold colors and comic book style",
+        "art nouveau elegant flowing organic lines",
+        "abstract expressionism bold gestural strokes",
+        "renaissance painting chiaroscuro lighting",
+        "pixel art retro 8-bit game style",
+        "surrealist dreamlike bizarre juxtapositions",
+        "art deco geometric patterns and gold accents",
+        "graffiti street art urban colorful spray paint",
+        "ukiyo-e Japanese woodblock print style",
+        "low poly 3D geometric minimalist",
+        "baroque painting dramatic theatrical lighting",
+        "futurist dynamic motion and speed lines",
+        "pointillism dots of pure color",
+        "constructivist bold geometric propaganda style"
       ];
 
       // Initialize
