@@ -292,6 +292,24 @@
         margin-bottom: 5px;
         display: block;
       }
+      .autocomplete-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        background-color: white;
+        transition: all 0.3s ease;
+      }
+      .autocomplete-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .autocomplete-input::placeholder {
+        color: #adb5bd;
+      }
       .countdown {
         font-family: "Courier New", monospace;
         font-weight: bold;
@@ -341,36 +359,36 @@
       <div class="prompt-section">
         <div class="prompt-row">
           <div>
-            <label for="sceneSelect">Scene:</label>
-            <select id="sceneSelect" onchange="updatePrompt()">
-              <option value="">-- Select a scene --</option>
-              <option value="Mountain landscape at golden hour with dramatic clouds" selected>Mountain landscape at golden hour</option>
-              <option value="Futuristic cyberpunk cityscape with neon lights">Futuristic cyberpunk cityscape</option>
-              <option value="Japanese zen garden with koi pond and cherry blossoms">Japanese zen garden with koi pond</option>
-              <option value="Underwater coral reef with tropical fish and sea turtles">Underwater coral reef</option>
-              <option value="Cozy Scandinavian cottage in winter with snow">Cozy Scandinavian cottage in winter</option>
-              <option value="Space station orbiting Earth with Milky Way background">Space station orbiting Earth</option>
-              <option value="Medieval castle on misty hilltop at sunrise">Medieval castle on misty hilltop</option>
-              <option value="Tropical beach at sunset with palm trees">Tropical beach at sunset</option>
-              <option value="Ancient library with towering bookshelves and ladder">Ancient library with towering bookshelves</option>
-              <option value="Mystical forest with bioluminescent plants and fireflies">Mystical forest with bioluminescent plants</option>
-            </select>
+            <label for="sceneInput">Scene:</label>
+            <input type="text" id="sceneInput" list="sceneOptions" oninput="updatePrompt()" placeholder="Type or select a scene..." value="Mountain landscape at golden hour with dramatic clouds" class="autocomplete-input">
+            <datalist id="sceneOptions">
+              <option value="Mountain landscape at golden hour with dramatic clouds">
+              <option value="Futuristic cyberpunk cityscape with neon lights">
+              <option value="Japanese zen garden with koi pond and cherry blossoms">
+              <option value="Underwater coral reef with tropical fish and sea turtles">
+              <option value="Cozy Scandinavian cottage in winter with snow">
+              <option value="Space station orbiting Earth with Milky Way background">
+              <option value="Medieval castle on misty hilltop at sunrise">
+              <option value="Tropical beach at sunset with palm trees">
+              <option value="Ancient library with towering bookshelves and ladder">
+              <option value="Mystical forest with bioluminescent plants and fireflies">
+            </datalist>
           </div>
           <div>
-            <label for="styleSelect">Style:</label>
-            <select id="styleSelect" onchange="updatePrompt()">
-              <option value="">-- Select a style --</option>
-              <option value="photorealistic 8K highly detailed" selected>Photorealistic 8K highly detailed</option>
-              <option value="oil painting impressionist style with visible brushstrokes">Oil painting impressionist style</option>
-              <option value="digital art vibrant colors and bold contrasts">Digital art vibrant colors</option>
-              <option value="watercolor soft and dreamy ethereal atmosphere">Watercolor soft and dreamy</option>
-              <option value="anime Studio Ghibli inspired whimsical style">Anime Studio Ghibli inspired</option>
-              <option value="cinematic dramatic lighting and composition">Cinematic dramatic lighting</option>
-              <option value="minimalist clean composition with negative space">Minimalist clean composition</option>
-              <option value="3D render octane render cinematic">3D render octane render</option>
-              <option value="vintage photograph sepia tone nostalgic">Vintage photograph sepia tone</option>
-              <option value="fantasy art epic scale magical atmosphere">Fantasy art epic scale</option>
-            </select>
+            <label for="styleInput">Style:</label>
+            <input type="text" id="styleInput" list="styleOptions" oninput="updatePrompt()" placeholder="Type or select a style..." value="photorealistic 8K highly detailed" class="autocomplete-input">
+            <datalist id="styleOptions">
+              <option value="photorealistic 8K highly detailed">
+              <option value="oil painting impressionist style with visible brushstrokes">
+              <option value="digital art vibrant colors and bold contrasts">
+              <option value="watercolor soft and dreamy ethereal atmosphere">
+              <option value="anime Studio Ghibli inspired whimsical style">
+              <option value="cinematic dramatic lighting and composition">
+              <option value="minimalist clean composition with negative space">
+              <option value="3D render octane render cinematic">
+              <option value="vintage photograph sepia tone nostalgic">
+              <option value="fantasy art epic scale magical atmosphere">
+            </datalist>
           </div>
         </div>
         <button class="btn btn-secondary" onclick="randomizePrompt()" style="margin-bottom: 15px;">
@@ -600,8 +618,8 @@
 
       // Prompt Functions
       function updatePrompt() {
-        const scene = document.getElementById('sceneSelect').value;
-        const style = document.getElementById('styleSelect').value;
+        const scene = document.getElementById('sceneInput').value;
+        const style = document.getElementById('styleInput').value;
         const promptField = document.getElementById('prompt');
         
         if (scene && style) {
@@ -617,8 +635,8 @@
         const randomScene = sceneOptions[Math.floor(Math.random() * sceneOptions.length)];
         const randomStyle = styleOptions[Math.floor(Math.random() * styleOptions.length)];
         
-        document.getElementById('sceneSelect').value = randomScene;
-        document.getElementById('styleSelect').value = randomStyle;
+        document.getElementById('sceneInput').value = randomScene;
+        document.getElementById('styleInput').value = randomStyle;
         updatePrompt();
         
         log('Randomized prompt generated', 'info');
