@@ -29,26 +29,82 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://pollinations.ai">
     <style>
+      :root {
+        /* Light theme (default) */
+        --bg-body: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --bg-container: white;
+        --text-primary: #333;
+        --text-secondary: #666;
+        --text-muted: #666;
+        --border-color: #e9ecef;
+        --bg-card: #f8f9fa;
+        --bg-input: white;
+        --bg-log: #000;
+        --text-log: #0f0;
+        --link-color: #667eea;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+
+      [data-theme="dark"] {
+        --bg-body: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        --bg-container: #1e1e2e;
+        --text-primary: #e0e0e0;
+        --text-secondary: #b0b0b0;
+        --text-muted: #888;
+        --border-color: #333;
+        --bg-card: #2a2a3a;
+        --bg-input: #2a2a3a;
+        --bg-log: #0a0a0a;
+        --text-log: #0f0;
+        --link-color: #8a9eff;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+      }
+
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--bg-body);
         min-height: 100vh;
+        transition: background 0.3s ease;
+      }
+
+      /* Theme toggle button */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--bg-container);
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 24px;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+      .theme-toggle:hover {
+        transform: scale(1.1);
       }
       .container {
-        background: white;
+        background: var(--bg-container);
         border-radius: 16px;
         padding: 30px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 20px 60px var(--shadow-color);
+        transition: background 0.3s ease, box-shadow 0.3s ease;
       }
       h1 {
-        color: #333;
+        color: var(--text-primary);
         margin-bottom: 10px;
       }
       .subtitle {
-        color: #666;
+        color: var(--text-secondary);
         margin-bottom: 0;
       }
       .test-grid {
@@ -58,10 +114,10 @@
         margin-top: 30px;
       }
       .test-card {
-        background: #f8f9fa;
+        background: var(--bg-card);
         border-radius: 12px;
         padding: 20px;
-        border: 2px solid #e9ecef;
+        border: 2px solid var(--border-color);
         transition: all 0.3s ease;
       }
       .test-card:hover {
@@ -70,12 +126,12 @@
       }
       .test-card h3 {
         margin-top: 0;
-        color: #667eea;
+        color: var(--link-color);
       }
       .image-container {
         width: 100%;
         aspect-ratio: 1;
-        background: #e9ecef;
+        background: var(--border-color);
         border-radius: 8px;
         overflow: hidden;
         margin: 15px 0;
@@ -185,7 +241,7 @@
         50% { opacity: 0.7; }
       }
       .controls {
-        background: #f8f9fa;
+        background: var(--bg-card);
         padding: 20px;
         border-radius: 12px;
         margin-bottom: 30px;
@@ -194,17 +250,20 @@
         display: block;
         margin-bottom: 8px;
         font-weight: 600;
+        color: var(--text-primary);
       }
       .controls input,
       .controls select,
       .controls textarea {
         width: 100%;
         padding: 10px;
-        border: 2px solid #dee2e6;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
         font-size: 14px;
         margin-bottom: 15px;
         box-sizing: border-box;
+        background: var(--bg-input);
+        color: var(--text-primary);
       }
       .controls textarea {
         min-height: 100px;
@@ -214,11 +273,12 @@
       .prompt-textarea {
         width: 100%;
         padding: 10px 12px;
-        border: 2px solid #dee2e6;
+        border: 2px solid var(--border-color);
         border-radius: 6px;
         font-size: 13px;
         box-sizing: border-box;
-        background-color: white;
+        background-color: var(--bg-input);
+        color: var(--text-primary);
         font-family: inherit;
         line-height: 1.4;
         min-height: 60px;
@@ -230,7 +290,7 @@
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
       }
       .prompt-textarea::placeholder {
-        color: #adb5bd;
+        color: var(--text-muted);
       }
       .btn {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -332,7 +392,7 @@
         }
       }
       .stat-box {
-        background: #f8f9fa;
+        background: var(--bg-card);
         padding: 10px 8px;
         border-radius: 6px;
         text-align: center;
@@ -340,11 +400,11 @@
       .stat-value {
         font-size: 18px;
         font-weight: bold;
-        color: #667eea;
+        color: var(--link-color);
       }
       .stat-label {
         font-size: 10px;
-        color: #666;
+        color: var(--text-muted);
         text-transform: uppercase;
       }
       .stat-box-highlight {
@@ -353,9 +413,15 @@
       .stat-box-highlight .stat-value {
         color: #856404;
       }
+      [data-theme="dark"] .stat-box-highlight {
+        background: linear-gradient(135deg, #4a4008 0%, #665a0a 100%);
+      }
+      [data-theme="dark"] .stat-box-highlight .stat-value {
+        color: #ffd700;
+      }
       .log {
-        background: #000;
-        color: #0f0;
+        background: var(--bg-log);
+        color: var(--text-log);
         padding: 15px;
         border-radius: 8px;
         font-family: "Courier New", monospace;
@@ -363,6 +429,7 @@
         height: 200px;
         overflow-y: auto;
         margin-top: 20px;
+        border: 1px solid var(--border-color);
       }
       .log-entry {
         margin: 2px 0;
@@ -387,6 +454,7 @@
         margin-bottom: 15px;
         min-width: 280px;
         max-width: 400px;
+        color: #333;
       }
       .byop-section.connected {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
@@ -434,13 +502,13 @@
       }
       .byop-info {
         font-size: 13px;
-        color: #333;
+        color: inherit;
       }
       .byop-info strong {
         color: #28a745;
       }
       .prompt-section {
-        background: #e9ecef;
+        background: var(--bg-card);
         border-radius: 10px;
         padding: 15px;
         margin-bottom: 15px;
@@ -452,15 +520,15 @@
         margin-bottom: 10px;
       }
       .prompt-preview {
-        background: white;
-        border: 2px solid #dee2e6;
+        background: var(--bg-input);
+        border: 2px solid var(--border-color);
         border-radius: 6px;
         padding: 10px;
         margin-top: 8px;
       }
       .prompt-preview label {
         font-size: 11px;
-        color: #666;
+        color: var(--text-muted);
         text-transform: uppercase;
         margin-bottom: 4px;
         display: block;
@@ -468,11 +536,12 @@
       .autocomplete-input {
         width: 100%;
         padding: 10px 12px;
-        border: 2px solid #dee2e6;
+        border: 2px solid var(--border-color);
         border-radius: 6px;
         font-size: 13px;
         box-sizing: border-box;
-        background-color: white;
+        background-color: var(--bg-input);
+        color: var(--text-primary);
         transition: all 0.3s ease;
       }
       .autocomplete-input:focus {
@@ -481,7 +550,7 @@
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
       }
       .autocomplete-input::placeholder {
-        color: #adb5bd;
+        color: var(--text-muted);
       }
       .countdown {
         font-family: "Courier New", monospace;
@@ -490,7 +559,7 @@
       }
       .retry-info {
         font-size: 11px;
-        color: #666;
+        color: var(--text-muted);
         margin-top: 5px;
       }
       @media (max-width: 768px) {
@@ -504,6 +573,11 @@
     </style>
   </head>
   <body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+      🌙
+    </button>
+
     <div class="container">
       <div class="header-row">
         <div class="header-title">
@@ -712,13 +786,8 @@
             <img src="https://img.shields.io/badge/Built%20with-Pollinations-8a2be2?style=for-the-badge&logo=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20124%20124%22%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%2262%22%20fill%3D%22%23ffffff%22%2F%3E%3C%2Fsvg%3E&logoColor=white&labelColor=6a0dad" alt="Built With pollinations.ai" style="height: 28px;">
           </a>
         </div>
-        <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-          <li><a href="https://pollinations.ai" target="_blank" rel="nofollow" style="color: #667eea; text-decoration: none; font-weight: 600;">pollinations.ai</a></li>
-          <li><a href="https://raw.githubusercontent.com/pollinations/pollinations/main/assets/logo.svg" target="_blank" rel="nofollow" style="color: #667eea; text-decoration: none;">Logo White</a></li>
-          <li><a href="https://raw.githubusercontent.com/pollinations/pollinations/main/assets/logo-text.svg" target="_blank" rel="nofollow" style="color: #667eea; text-decoration: none;">Logo Text White</a></li>
-        </ul>
-        <p style="margin-top: 20px; font-size: 12px; color: #666;">
-          Powered by <a href="https://pollinations.ai" target="_blank" rel="nofollow" style="color: #667eea;">pollinations.ai</a> - Free AI Image Generation API
+        <p style="margin-top: 20px; font-size: 12px; color: var(--text-muted);">
+          Powered by <a href="https://pollinations.ai" target="_blank" rel="nofollow" style="color: var(--link-color);">pollinations.ai</a> - Free AI Image Generation API
         </p>
       </footer>
     </div>
@@ -1537,6 +1606,28 @@
         modalHideTimeout = setTimeout(() => {
           fullscreenModal.classList.remove('active');
         }, 100);
+      }
+
+      // Theme toggle functionality
+      const themeToggle = document.getElementById('themeToggle');
+      
+      // Check for saved theme preference or default to 'light'
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      updateThemeIcon(currentTheme);
+
+      function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+      }
+
+      function updateThemeIcon(theme) {
+        themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        themeToggle.title = theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode';
       }
     </script>
   </body>
