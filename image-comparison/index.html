@@ -396,64 +396,54 @@
         </div>
       </div>
 
-      <!-- Prompt Controls -->
-      <div class="prompt-section">
-        <div class="prompt-row">
-          <div>
-            <label for="sceneInput">Scene:</label>
-            <input type="text" id="sceneInput" list="sceneOptions" oninput="updatePrompt()" placeholder="Type or select a scene..." value="Mountain landscape at golden hour with dramatic clouds" class="autocomplete-input">
-            <datalist id="sceneOptions">
-              <option value="Mountain landscape at golden hour with dramatic clouds">
-              <option value="Futuristic cyberpunk cityscape with neon lights">
-              <option value="Japanese zen garden with koi pond and cherry blossoms">
-              <option value="Underwater coral reef with tropical fish and sea turtles">
-              <option value="Cozy Scandinavian cottage in winter with snow">
-              <option value="Space station orbiting Earth with Milky Way background">
-              <option value="Medieval castle on misty hilltop at sunrise">
-              <option value="Tropical beach at sunset with palm trees">
-              <option value="Ancient library with towering bookshelves and ladder">
-              <option value="Mystical forest with bioluminescent plants and fireflies">
-            </datalist>
-          </div>
-          <div>
-            <label for="styleInput">Style:</label>
-            <input type="text" id="styleInput" list="styleOptions" oninput="updatePrompt()" placeholder="Type or select a style..." value="photorealistic 8K highly detailed" class="autocomplete-input">
-            <datalist id="styleOptions">
-              <option value="photorealistic 8K highly detailed">
-              <option value="oil painting impressionist style with visible brushstrokes">
-              <option value="digital art vibrant colors and bold contrasts">
-              <option value="watercolor soft and dreamy ethereal atmosphere">
-              <option value="anime Studio Ghibli inspired whimsical style">
-              <option value="cinematic dramatic lighting and composition">
-              <option value="minimalist clean composition with negative space">
-              <option value="3D render octane render cinematic">
-              <option value="vintage photograph sepia tone nostalgic">
-              <option value="fantasy art epic scale magical atmosphere">
-            </datalist>
-          </div>
-        </div>
-        <button class="btn btn-secondary" onclick="randomizePrompt()" style="margin-bottom: 10px; font-size: 12px; padding: 6px 12px;">
-          🎲 Randomize
-        </button>
-        <div class="prompt-preview">
-          <label>Final Prompt:</label>
-          <textarea id="prompt" class="prompt-textarea" placeholder="Select or type a scene and style above to build your prompt...">Mountain landscape at golden hour with dramatic clouds, photorealistic 8K highly detailed</textarea>
-        </div>
-      </div>
-
       <!-- Compact Controls Section -->
       <div class="compact-section">
-        <div class="compact-prompt">
-          <!-- Prompt section already above -->
-        </div>
-        <div class="compact-controls">
-          <button class="btn" id="testAllBtn" onclick="testAllModels()" style="flex: 1;">Test All Models</button>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()" style="flex: 1; font-size: 12px; padding: 8px 12px;">Clear</button>
-            <button class="btn btn-secondary" id="cancelBtn" onclick="cancelAllRetries()" style="flex: 1; font-size: 12px; padding: 8px 12px; display: none;">Cancel</button>
+        <div class="compact-prompt" style="flex: 3; min-width: 400px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 180px;">
+              <label for="sceneInput" style="font-size: 11px; margin-bottom: 2px; display: block;">Scene:</label>
+              <input type="text" id="sceneInput" list="sceneOptions" oninput="updatePrompt()" placeholder="Type or select a scene..." value="Mountain landscape at golden hour with dramatic clouds" class="autocomplete-input" style="margin-bottom: 0;">
+              <datalist id="sceneOptions">
+                <option value="Mountain landscape at golden hour with dramatic clouds">
+                <option value="Futuristic cyberpunk cityscape with neon lights">
+                <option value="Japanese zen garden with koi pond and cherry blossoms">
+                <option value="Underwater coral reef with tropical fish and sea turtles">
+                <option value="Cozy Scandinavian cottage in winter with snow">
+                <option value="Space station orbiting Earth with Milky Way background">
+                <option value="Medieval castle on misty hilltop at sunrise">
+                <option value="Tropical beach at sunset with palm trees">
+                <option value="Ancient library with towering bookshelves and ladder">
+                <option value="Mystical forest with bioluminescent plants and fireflies">
+              </datalist>
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+              <label for="styleInput" style="font-size: 11px; margin-bottom: 2px; display: block;">Style:</label>
+              <input type="text" id="styleInput" list="styleOptions" oninput="updatePrompt()" placeholder="Type or select a style..." value="photorealistic 8K highly detailed" class="autocomplete-input" style="margin-bottom: 0;">
+              <datalist id="styleOptions">
+                <option value="photorealistic 8K highly detailed">
+                <option value="oil painting impressionist style with visible brushstrokes">
+                <option value="digital art vibrant colors and bold contrasts">
+                <option value="watercolor soft and dreamy ethereal atmosphere">
+                <option value="anime Studio Ghibli inspired whimsical style">
+                <option value="cinematic dramatic lighting and composition">
+                <option value="minimalist clean composition with negative space">
+                <option value="3D render octane render cinematic">
+                <option value="vintage photograph sepia tone nostalgic">
+                <option value="fantasy art epic scale magical atmosphere">
+              </datalist>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: flex-start;">
+            <textarea id="prompt" class="prompt-textarea" placeholder="Select or type a scene and style above to build your prompt..." style="flex: 1; min-height: 50px; font-size: 12px; padding: 8px;">Mountain landscape at golden hour with dramatic clouds, photorealistic 8K highly detailed</textarea>
+            <button class="btn btn-secondary" onclick="randomizePrompt()" title="Randomize Scene + Style" style="padding: 8px 12px; font-size: 16px; min-width: 40px;">🎲</button>
           </div>
         </div>
-        <div class="compact-stats">
+        <div class="compact-controls" style="flex: 0 0 auto; min-width: 120px;">
+          <button class="btn" id="testAllBtn" onclick="testAllModels()" style="width: 100%; margin-bottom: 8px; padding: 10px 16px; font-size: 13px;">Test All Models</button>
+          <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()" style="width: 100%; font-size: 12px; padding: 6px 12px; margin-bottom: 4px;">Clear</button>
+          <button class="btn btn-secondary" id="cancelBtn" onclick="cancelAllRetries()" style="width: 100%; font-size: 12px; padding: 6px 12px; display: none;">Cancel</button>
+        </div>
+        <div class="compact-stats" style="flex: 0 0 auto; min-width: 140px;">
           <div class="stat-box">
             <div class="stat-value" id="totalTests">0</div>
             <div class="stat-label">Tests</div>
@@ -665,7 +655,6 @@
           testBtn.disabled = true;
           testBtn.textContent = 'Connect to Test Models';
         }
-      }
       }
 
       // Prompt Functions
