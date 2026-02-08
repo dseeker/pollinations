@@ -49,7 +49,7 @@
       }
       .subtitle {
         color: #666;
-        margin-bottom: 30px;
+        margin-bottom: 0;
       }
       .test-grid {
         display: grid;
@@ -85,6 +85,52 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+      .hover-zoom-image {
+        cursor: zoom-in;
+        transition: transform 0.3s ease;
+      }
+      .hover-zoom-image:hover {
+        transform: scale(1.02);
+      }
+      .fullscreen-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        pointer-events: none;
+      }
+      .fullscreen-modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .fullscreen-modal img {
+        max-width: 90vw;
+        max-height: 85vh;
+        object-fit: contain;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      .fullscreen-modal-caption {
+        color: white;
+        margin-top: 20px;
+        font-size: 18px;
+        text-align: center;
+        padding: 0 20px;
+      }
+      .fullscreen-modal-hint {
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 10px;
+        font-size: 14px;
       }
       .image-container .loading {
         position: absolute;
@@ -215,30 +261,75 @@
       .btn-disconnect {
         background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
       }
-      .compact-section {
+      .compact-controls .btn {
+        width: 100%;
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+      .compact-controls .btn-secondary {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+      .header-row {
         display: flex;
-        align-items: stretch;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 20px;
+      }
+      .header-title {
+        flex: 1;
+      }
+      .header-byop {
+        flex: 0 0 auto;
+      }
+      .compact-section {
+        display: grid;
+        grid-template-columns: minmax(300px, 3fr) auto auto;
         gap: 15px;
         margin-top: 15px;
-        flex-wrap: wrap;
+        align-items: start;
       }
       .compact-prompt {
-        flex: 2;
         min-width: 300px;
       }
       .compact-controls {
-        flex: 1;
-        min-width: 200px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        min-width: 140px;
       }
       .compact-stats {
-        flex: 1;
-        min-width: 200px;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
+        min-width: 120px;
+      }
+      @media (max-width: 900px) {
+        .header-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .header-byop {
+          max-width: 100%;
+        }
+        .compact-section {
+          grid-template-columns: 1fr;
+        }
+        .compact-controls {
+          flex-direction: row;
+          justify-content: flex-start;
+        }
+        .compact-controls .btn {
+          width: auto;
+          flex: 1;
+        }
+        .compact-stats {
+          max-width: 100%;
+        }
+        .prompt-inputs-row {
+          grid-template-columns: 1fr;
+        }
       }
       .stat-box {
         background: #f8f9fa;
@@ -255,6 +346,12 @@
         font-size: 10px;
         color: #666;
         text-transform: uppercase;
+      }
+      .stat-box-highlight {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+      }
+      .stat-box-highlight .stat-value {
+        color: #856404;
       }
       .log {
         background: #000;
@@ -288,10 +385,45 @@
         border-radius: 8px;
         padding: 12px 15px;
         margin-bottom: 15px;
+        min-width: 280px;
+        max-width: 400px;
       }
       .byop-section.connected {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         border-color: #28a745;
+      }
+      .prompt-inputs-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .prompt-input-group label {
+        font-size: 11px;
+        margin-bottom: 4px;
+        display: block;
+        font-weight: 600;
+      }
+      .prompt-input-group input {
+        margin-bottom: 0;
+        width: 100%;
+      }
+      .prompt-final-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      .prompt-final-row textarea {
+        flex: 1;
+        min-height: 50px;
+        font-size: 12px;
+        padding: 8px;
+      }
+      .prompt-final-row button {
+        padding: 8px 12px;
+        font-size: 16px;
+        min-width: 40px;
+        height: 50px;
       }
       .byop-status {
         display: flex;
@@ -373,15 +505,14 @@
   </head>
   <body>
     <div class="container">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 20px; flex-wrap: wrap;">
-        <div style="flex: 1;">
-          <img src="https://raw.githubusercontent.com/pollinations/pollinations/main/assets/logo-text.svg" alt="pollinations.ai" style="max-width: 250px; height: auto; margin-bottom: 10px;">
-          <h1 style="margin-top: 10px; margin-bottom: 10px;">🌸 Pollinations.ai Image Model Comparison</h1>
-          <p class="subtitle" style="margin-bottom: 0;">Compare AI image generation models side-by-side</p>
+      <div class="header-row">
+        <div class="header-title">
+          <h1>🌸 Pollinations.ai Image Model Comparison</h1>
+          <p class="subtitle">Compare AI image generation models side-by-side</p>
         </div>
         
         <!-- BYOP Section -->
-        <div class="byop-section" id="byopSection" style="flex: 0 0 auto; min-width: 300px; max-width: 400px;">
+        <div class="byop-section header-byop" id="byopSection">
           <div class="byop-status">
             <div class="byop-info" id="byopInfo">
               <strong>API Key Required</strong> - Connect your Pollinations account to test models
@@ -400,11 +531,11 @@
 
       <!-- Compact Controls Section -->
       <div class="compact-section">
-        <div class="compact-prompt" style="flex: 3; min-width: 400px;">
-          <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 180px;">
-              <label for="sceneInput" style="font-size: 11px; margin-bottom: 2px; display: block;">Scene:</label>
-              <input type="text" id="sceneInput" list="sceneOptions" oninput="updatePrompt()" placeholder="Type or select a scene..." value="Mountain landscape at golden hour with dramatic clouds" class="autocomplete-input" style="margin-bottom: 0;">
+        <div class="compact-prompt">
+          <div class="prompt-inputs-row">
+            <div class="prompt-input-group">
+              <label for="sceneInput">Scene:</label>
+              <input type="text" id="sceneInput" list="sceneOptions" oninput="updatePrompt()" placeholder="Type or select a scene..." value="Mountain landscape at golden hour with dramatic clouds" class="autocomplete-input">
               <datalist id="sceneOptions">
                 <!-- Landscapes & Nature -->
                 <option value="Mountain landscape at golden hour with dramatic clouds">
@@ -488,9 +619,9 @@
                 <option value="Giant robot fighting kaiju in Tokyo">
               </datalist>
             </div>
-            <div style="flex: 1; min-width: 180px;">
-              <label for="styleInput" style="font-size: 11px; margin-bottom: 2px; display: block;">Style:</label>
-              <input type="text" id="styleInput" list="styleOptions" oninput="updatePrompt()" placeholder="Type or select a style..." value="photorealistic 8K highly detailed" class="autocomplete-input" style="margin-bottom: 0;">
+            <div class="prompt-input-group">
+              <label for="styleInput">Style:</label>
+              <input type="text" id="styleInput" list="styleOptions" oninput="updatePrompt()" placeholder="Type or select a style..." value="photorealistic 8K highly detailed" class="autocomplete-input">
               <datalist id="styleOptions">
                 <option value="photorealistic 8K highly detailed">
                 <option value="oil painting impressionist style with visible brushstrokes">
@@ -520,17 +651,17 @@
               </datalist>
             </div>
           </div>
-          <div style="display: flex; gap: 8px; align-items: flex-start;">
-            <textarea id="prompt" class="prompt-textarea" placeholder="Select or type a scene and style above to build your prompt..." style="flex: 1; min-height: 50px; font-size: 12px; padding: 8px;">Mountain landscape at golden hour with dramatic clouds, photorealistic 8K highly detailed</textarea>
-            <button class="btn btn-secondary" onclick="randomizePrompt()" title="Randomize Scene + Style" style="padding: 8px 12px; font-size: 16px; min-width: 40px;">🎲</button>
+          <div class="prompt-final-row">
+            <textarea id="prompt" class="prompt-textarea" placeholder="Select or type a scene and style above to build your prompt...">Mountain landscape at golden hour with dramatic clouds, photorealistic 8K highly detailed</textarea>
+            <button class="btn btn-secondary" onclick="randomizePrompt()" title="Randomize Scene + Style">🎲</button>
           </div>
         </div>
-        <div class="compact-controls" style="flex: 0 0 auto; min-width: 120px;">
-          <button class="btn" id="testAllBtn" onclick="testAllModels()" style="width: 100%; margin-bottom: 8px; padding: 10px 16px; font-size: 13px;">Test All Models</button>
-          <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()" style="width: 100%; font-size: 12px; padding: 6px 12px; margin-bottom: 4px;">Clear</button>
-          <button class="btn btn-secondary" id="cancelBtn" onclick="cancelAllRetries()" style="width: 100%; font-size: 12px; padding: 6px 12px; display: none;">Cancel</button>
+        <div class="compact-controls">
+          <button class="btn" id="testAllBtn" onclick="testAllModels()">Test All Models</button>
+          <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()">Clear</button>
+          <button class="btn btn-secondary" id="cancelBtn" onclick="cancelAllRetries()" style="display: none;">Cancel</button>
         </div>
-        <div class="compact-stats" style="flex: 0 0 auto; min-width: 140px;">
+        <div class="compact-stats">
           <div class="stat-box">
             <div class="stat-value" id="totalTests">0</div>
             <div class="stat-label">Tests</div>
@@ -543,8 +674,8 @@
             <div class="stat-value" id="failCount">0</div>
             <div class="stat-label">Failed</div>
           </div>
-          <div class="stat-box" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)">
-            <div class="stat-value" id="totalCost" style="color: #856404">0</div>
+          <div class="stat-box stat-box-highlight">
+            <div class="stat-value" id="totalCost">0</div>
             <div class="stat-label">Pollens</div>
           </div>
         </div>
@@ -590,6 +721,13 @@
           Powered by <a href="https://pollinations.ai" target="_blank" rel="nofollow" style="color: #667eea;">pollinations.ai</a> - Free AI Image Generation API
         </p>
       </footer>
+    </div>
+
+    <!-- Fullscreen Image Modal -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+      <img id="fullscreenImage" src="" alt="Fullscreen view">
+      <div class="fullscreen-modal-caption" id="fullscreenCaption"></div>
+      <div class="fullscreen-modal-hint">Click to open in new tab • Move mouse away to close</div>
     </div>
 
     <script>
@@ -1109,7 +1247,7 @@
           const size = (blob.size / 1024).toFixed(1) + " KB";
           
           const container = document.getElementById(`${model}-container`);
-          container.innerHTML = `<img src="${imageUrl}" alt="${model} result" onclick="window.open('${imageUrl}', '_blank')" style="cursor: zoom-in;">`;
+          container.innerHTML = `<img src="${imageUrl}" alt="${model} result" class="hover-zoom-image" onmouseenter="showFullscreenModal('${imageUrl}', '${model}')" onmouseleave="hideFullscreenModal()" onclick="window.open('${imageUrl}', '_blank')">`;
           
           setSuccess(model, duration, size);
         } catch (error) {
@@ -1370,6 +1508,35 @@
         renderModelTags();
         generateTestCards();
         log("All models deselected", "info");
+      }
+
+      // Fullscreen modal functions
+      let modalHideTimeout;
+      const fullscreenModal = document.getElementById('fullscreenModal');
+      const fullscreenImage = document.getElementById('fullscreenImage');
+      const fullscreenCaption = document.getElementById('fullscreenCaption');
+
+      // Prevent modal from closing when hovering over it
+      fullscreenModal.addEventListener('mouseenter', () => {
+        clearTimeout(modalHideTimeout);
+      });
+
+      fullscreenModal.addEventListener('mouseleave', () => {
+        hideFullscreenModal();
+      });
+
+      function showFullscreenModal(imageUrl, modelName) {
+        clearTimeout(modalHideTimeout);
+        fullscreenImage.src = imageUrl;
+        fullscreenCaption.textContent = modelName;
+        fullscreenModal.classList.add('active');
+      }
+
+      function hideFullscreenModal() {
+        // Small delay to allow moving mouse to modal if desired
+        modalHideTimeout = setTimeout(() => {
+          fullscreenModal.classList.remove('active');
+        }, 100);
       }
     </script>
   </body>
