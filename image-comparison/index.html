@@ -732,7 +732,8 @@
         </div>
         <div class="compact-controls">
           <button class="btn" id="testAllBtn" onclick="testAllModels()">Test All Models</button>
-          <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()">Clear</button>
+          <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()">Clear Results</button>
+          <button class="btn btn-secondary" id="resetBtn" onclick="resetSettings()" title="Reset all settings to defaults">Reset Settings</button>
           <button class="btn btn-secondary" id="cancelBtn" onclick="cancelAllRetries()" style="display: none;">Cancel</button>
         </div>
         <div class="compact-stats">
@@ -1049,6 +1050,7 @@
         } else if (style) {
           promptField.value = style;
         }
+        saveSettings();
       }
 
       function randomizePrompt() {
@@ -1409,13 +1411,41 @@
           log(`Loaded ${availableModels.length} image models from API`, "success");
           
           document.getElementById("modelsInfo").style.display = "block";
-          selectedModels = new Set(availableModels);
+          
+          // Apply saved selected models if available, otherwise select all
+          if (window.savedSelectedModels && window.savedSelectedModels.size > 0) {
+            // Filter to only include models that actually exist
+            selectedModels = new Set(
+              Array.from(window.savedSelectedModels).filter(m => availableModels.includes(m))
+            );
+            // If no valid models were saved, select all
+            if (selectedModels.size === 0) {
+              selectedModels = new Set(availableModels);
+            }
+            window.savedSelectedModels = null; // Clear the temp storage
+          } else {
+            selectedModels = new Set(availableModels);
+          }
+          
           renderModelTags();
           generateTestCards();
         } catch (error) {
           log(`Failed to load models: ${error.message}`, "error");
           availableModels = ["flux", "gptimage", "zimage", "nanobanana"];
-          selectedModels = new Set(availableModels);
+          
+          // Apply saved selected models if available, otherwise select all
+          if (window.savedSelectedModels && window.savedSelectedModels.size > 0) {
+            selectedModels = new Set(
+              Array.from(window.savedSelectedModels).filter(m => availableModels.includes(m))
+            );
+            if (selectedModels.size === 0) {
+              selectedModels = new Set(availableModels);
+            }
+            window.savedSelectedModels = null;
+          } else {
+            selectedModels = new Set(availableModels);
+          }
+          
           renderModelTags();
           generateTestCards();
         }
@@ -1447,6 +1477,7 @@
         }
         renderModelTags();
         generateTestCards();
+        saveSettings();
       }
 
       function generateTestCards() {
@@ -1565,10 +1596,28 @@
           '<div class="log-entry">Ready to test! Select a scene and style, then click "Test All Models" to begin.</div>';
       }
 
+      function resetSettings() {
+        // Clear saved settings
+        localStorage.removeItem(SETTINGS_KEY);
+        
+        // Reset to defaults
+        document.getElementById('sceneInput').value = 'Mountain landscape at golden hour with dramatic clouds';
+        document.getElementById('styleInput').value = 'photorealistic 8K highly detailed';
+        document.getElementById('prompt').value = 'Mountain landscape at golden hour with dramatic clouds, photorealistic 8K highly detailed';
+        
+        // Reset model selection to all available
+        selectedModels = new Set(availableModels);
+        renderModelTags();
+        generateTestCards();
+        
+        log('Settings reset to defaults', 'info');
+      }
+
       function selectAllModels() {
         availableModels.forEach(model => selectedModels.add(model));
         renderModelTags();
         generateTestCards();
+        saveSettings();
         log("All models selected", "success");
       }
 
@@ -1576,6 +1625,7 @@
         selectedModels.clear();
         renderModelTags();
         generateTestCards();
+        saveSettings();
         log("All models deselected", "info");
       }
 
@@ -1629,6 +1679,58 @@
         themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
         themeToggle.title = theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode';
       }
+
+      // Settings persistence
+      const SETTINGS_KEY = 'pollinations_comparison_settings';
+
+      function saveSettings() {
+        const settings = {
+          scene: document.getElementById('sceneInput').value,
+          style: document.getElementById('styleInput').value,
+          prompt: document.getElementById('prompt').value,
+          selectedModels: Array.from(selectedModels),
+          timestamp: Date.now()
+        };
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      }
+
+      function loadSettings() {
+        try {
+          const saved = localStorage.getItem(SETTINGS_KEY);
+          if (saved) {
+            const settings = JSON.parse(saved);
+            
+            // Restore inputs
+            if (settings.scene) {
+              document.getElementById('sceneInput').value = settings.scene;
+            }
+            if (settings.style) {
+              document.getElementById('styleInput').value = settings.style;
+            }
+            if (settings.prompt) {
+              document.getElementById('prompt').value = settings.prompt;
+            }
+            
+            // Restore selected models (will be applied after models load)
+            if (settings.selectedModels && Array.isArray(settings.selectedModels)) {
+              // Store temporarily and apply after models are loaded
+              window.savedSelectedModels = new Set(settings.selectedModels);
+            }
+            
+            log('Previous settings restored', 'info');
+          }
+        } catch (e) {
+          console.error('Error loading settings:', e);
+        }
+      }
+
+      // Add event listeners to save settings on input changes
+      document.getElementById('sceneInput').addEventListener('input', saveSettings);
+      document.getElementById('styleInput').addEventListener('input', saveSettings);
+      document.getElementById('prompt').addEventListener('input', saveSettings);
+
+      // Load settings on page load
+      loadSettings();
     </script>
   </body>
 </html>
