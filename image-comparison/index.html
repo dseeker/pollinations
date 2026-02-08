@@ -1007,15 +1007,16 @@
           
           const models = await response.json();
           
-          // Filter out video models and only keep image models
+          // Filter models: keep if has image capability OR no modalities defined
+          // Only exclude models that are video-only (have video but no image)
           availableModels = models
             .filter(m => {
-              // Check if model outputs video
               const outputModalities = m.output_modalities || [];
               const isVideo = outputModalities.includes("video");
               const isImage = outputModalities.includes("image");
-              // Keep only image models (not video-only models)
-              return isImage && !isVideo || (!isVideo && !outputModalities.length);
+              // Keep if: has image (even with video), OR no modalities defined
+              // Exclude only if: has video but NO image capability
+              return isImage || outputModalities.length === 0 || (!isImage && !isVideo);
             })
             .map(m => m.name || m.id)
             .filter(Boolean);
